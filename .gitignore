@@ -1,3 +1,6 @@
+### idea ###
+.idea
+
 ### Flask ###
 instance/*
 !instance/.gitignore
