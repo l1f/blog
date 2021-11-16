@@ -16,8 +16,10 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
 
+    from .auth import auth
     from .cms import cms
     from .blog import blog
+    app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(cms, url_prefix="/cms")
     app.register_blueprint(blog)
 

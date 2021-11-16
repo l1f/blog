@@ -272,7 +272,7 @@ label {
   color: $medium-gray;
 }
 
-input[type="text"], input[type="search"], textarea {
+input[type="text"], input[type="search"], input[type="password"], textarea {
   font-family: $heading-font-family;
   font-size: $xs-size;
   line-height: $code-line-height;
@@ -470,6 +470,8 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .main {
   margin-top: 3.84rem;
+
+
 
   article {
     margin-bottom: $xl-size;

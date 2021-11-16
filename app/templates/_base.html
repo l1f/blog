@@ -7,7 +7,9 @@
         <link rel="icon" href="{{ url_for("static", filename="favicon.ico") }}" type="image/x-icon">
         <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}" type="text/css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+        {% block css %}
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+        {% endblock %}
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     {% endblock %}
     <title>{% block title %}Blog{% endblock %}</title>
@@ -41,198 +43,25 @@
         </nav>
     </header>
 {% endblock %}
-<main class="main">
-    <article>
-        <h1>Latest Posts</h1>
+{% block content %}
+    <main class="main">
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+        {% block page_content %}
+        {% endblock %}
 
-        <article>
-            <header>
-                <div class="title-and-meta">
-                    <h2><a href="detail.html">Lorem ipsum dolor sit amet</a></h2>
-
-                    <div class="post-meta">
-                        <div class="author">
-                            <img src="assets/author_mini.png" width="15"/>
-                            <span class="name">Triton Maxwell</span>
-                            <span class="role">Admin</span>
-                        </div>
-
-                        <div class="posted-date">
-                            <span class="icon calendar"></span>
-                            <span class="date">Dec 12, 2018 4:00 PM</span>
-                        </div>
-                        <div class="tagged-in">
-                            <span class="icon tag"></span>
-                            <ul>
-                                <li>
-                                    <a href="#">#javascript</a>
-                                </li>
-                                <li>
-                                    <a href="#">#css</a>
-                                </li>
-                                <li>
-                                    <a href="#">#html</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="total-comments">
-                            <span class="icon comment"></span>
-                            <a href="#">107 Comments</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <figure class="poster-image">
-                <img src="assets/agriculture-apple-blur.jpg">
-            </figure>
-
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
-            </p>
-
-            <p>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur.
-            </p>
-
-            <div class="continue-reading">
-                <a href="detail.html">Continue Reading →</a>
-            </div>
-        </article>
-
-        <article>
-            <header>
-                <div class="title-and-meta">
-                    <h2><a href="detail.html">Lorem ipsum dolor sit amet</a></h2>
-
-                    <div class="post-meta">
-                        <div class="author">
-                            <img src="assets/author_mini.png" width="15"/>
-                            <span class="name">Triton Maxwell</span>
-                            <span class="role">Admin</span>
-                        </div>
-
-                        <div class="posted-date">
-                            <span class="icon calendar"></span>
-                            <span class="date">Dec 12, 2018 4:00 PM</span>
-                        </div>
-                        <div class="tagged-in">
-                            <span class="icon tag"></span>
-                            <ul>
-                                <li>
-                                    <a href="#">#javascript</a>
-                                </li>
-                                <li>
-                                    <a href="#">#css</a>
-                                </li>
-                                <li>
-                                    <a href="#">#html</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="total-comments">
-                            <span class="icon comment"></span>
-                            <a href="#">107 Comments</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <figure class="poster-image">
-                <img src="assets/agriculture-apple-blur.jpg">
-            </figure>
-
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
-            </p>
-
-            <p>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur.
-            </p>
-
-            <div class="continue-reading">
-                <a href="detail.html">Continue Reading →</a>
-            </div>
-        </article>
-
-        <article>
-            <header>
-                <div class="title-and-meta">
-                    <h2><a href="detail.html">Lorem ipsum dolor sit amet</a></h2>
-
-                    <div class="post-meta">
-                        <div class="author">
-                            <img src="assets/author_mini.png" width="15"/>
-                            <span class="name">Triton Maxwell</span>
-                            <span class="role">Admin</span>
-                        </div>
-
-                        <div class="posted-date">
-                            <span class="icon calendar"></span>
-                            <span class="date">Dec 12, 2018 4:00 PM</span>
-                        </div>
-                        <div class="tagged-in">
-                            <span class="icon tag"></span>
-                            <ul>
-                                <li>
-                                    <a href="#">#javascript</a>
-                                </li>
-                                <li>
-                                    <a href="#">#css</a>
-                                </li>
-                                <li>
-                                    <a href="#">#html</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="total-comments">
-                            <span class="icon comment"></span>
-                            <a href="#">107 Comments</a>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <figure class="poster-image">
-                <img src="assets/agriculture-apple-blur.jpg">
-            </figure>
-
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim id est laborum.
-            </p>
-
-            <p>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur.
-            </p>
-
-            <div class="continue-reading">
-                <a href="detail.html">Continue Reading →</a>
-            </div>
-        </article>
-    </article>
-</main>
-
-<footer class="footer">
-    &copy; 2018 &middot; All Rights Reserved
-</footer>
-<script>hljs.initHighlightingOnLoad();</script>
+    </main>
+{% endblock %}
+{% block footer %}
+    <footer class="footer">
+        {% block footer_content %}
+            &copy; 2018 &middot; All Rights Reserved
+        {% endblock %}
+    </footer>
+{% endblock %}
+{% block scripts %}
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock %}
 </body>
 </html>
