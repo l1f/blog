@@ -5,4 +5,4 @@ from . import cms
 
 @cms.route("/")
 def index():
-    return "none"
+    return render_template("cms/index.html")
