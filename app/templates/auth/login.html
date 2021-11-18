@@ -6,27 +6,26 @@
         <div class="page-header">
             <h1>Login</h1>
         </div>
-        {# email
-    {#password
-    {#remember_me
-    {#submit #}
-        <div>
+        <form method="POST" action="{{ url_for("auth.login") }}">
             <div>
-                {{ form.email.label }}
-                {{ form.email() }}
-                {{ form.password.label }}
-                {{ form.password() }}
-                {{ form.remember_me.label }}
-                {{ form.remember_me() }}
+                <div>
+                    {{ form.email.label }}
+                    {{ form.email() }}
+                    {{ form.password.label }}
+                    {{ form.password() }}
+                    {{ form.remember_me.label }}
+                    {{ form.remember_me() }}
+                    {{ form.csrf_token }}
+                </div>
+                <div>
+                    {{ form.submit }}
+                </div>
+                <p>
+                    New user?
+                    <a href="{{ url_for("auth.login") }}">Register</a>
+                </p>
+                <p>Forgot your password? <a href="{{ url_for('auth.login') }}">Click here to reset it</a>.</p>
             </div>
-            <div>
-                {{ form.submit }}
-            </div>
-            <p>
-                New user?
-                <a href="{{ url_for("auth.login") }}">Register</a>
-            </p>
-            <p>Forgot your password? <a href="{{ url_for('auth.login') }}">Click here to reset it</a>.</p>
-        </div>
+        </form>
     </article>
 {% endblock %}

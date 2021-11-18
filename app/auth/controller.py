@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash
-from flask_login import login_user
+from flask_login import login_user, current_user
 
 from . import auth
 from .forms import LoginForm
@@ -9,6 +9,9 @@ from ..models import User
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
