@@ -8,6 +8,8 @@ class Config:
     SECRET_KEY = os.environ.get(f"{prefix}_SECRET_KEY") or "hard to guess string ;)"
     POSTS_PER_PAGE = 20
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CELERY_BROKER_URL = os.environ.get(f"{prefix}_TASK_BROKER")
+    RESULT_BACKEND = os.environ.get(f"{prefix}_TASK_RESULT")
 
     @staticmethod
     def init_app(app):
