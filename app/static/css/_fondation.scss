@@ -158,7 +158,7 @@ blockquote {
     font-size: $small-font-size;
 
     &::before {
-      content: '—';
+      content: '-';
       margin-right: 0.25rem;
     }
   }

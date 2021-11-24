@@ -4,3 +4,46 @@ services:
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      - database
+  postgres:
+    image: postgres:14.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=blog
+      - POSTGRES_DB=blog
+      - POSTGRES_PASSWORD=blog
+    networks:
+      - database
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - BLOG_DEV_DATABASE_URI=postgresql://blog:blog@postgres:5432/blog
+    networks:
+      - database
+  runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: celery -A worker.celery worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+    networks:
+      - database
+  sass:
+    image: larryprice/sass
+    volumes:
+    - ./app/static/css:/src
+
+networks:
+  database:
