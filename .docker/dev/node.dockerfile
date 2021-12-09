@@ -5,4 +5,4 @@ WORKDIR app
 
 COPY . /app
 
-CMD ["npm", "./.docker/dev/start-nodemon.sh"]
+CMD ["npm", "./.docker/dev/start-typescript-watch.sh"]
