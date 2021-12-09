@@ -26,20 +26,27 @@ services:
       - .:/app
     environment:
       - BLOG_DEV_DATABASE_URI=postgresql://blog:blog@postgres:5432/blog
+      - BLOG_TASK_BROKER=redis://redis:6379/0
+      - BLOG_TASK_RESULT=redis://redis:6379/1
     networks:
       - database
+      - mail
   runner:
     build:
       context: .
       dockerfile: .docker/dev/flask.dockerfile
-    command: celery -A worker.celery worker --loglevel=info
+    command: celery -A app.celery_app:app worker --loglevel=info
     volumes:
       - .:/app
     environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - MAIL_SERVER=mail
+      - MAIL_PORT=1025
+      - MAIL_USE_TLS=False
+      - BLOG_TASK_BROKER=redis://redis:6379/0
+      - BLOG_TASK_RESULT=redis://redis:6379/1
     networks:
       - database
+      - mail
   sass:
     image: larryprice/sass
     volumes:
@@ -50,6 +57,15 @@ services:
       dockerfile: .docker/dev/node.dockerfile
     volumes:
       - .:/app
+  mail:
+    image: lordius/alpine-mailhog
+    ports:
+     - 1025:1025
+     - 8025:8025
+    networks:
+      - mail
+
 
 networks:
   database:
+  mail:

@@ -4,7 +4,7 @@ from flask_login import login_user, current_user
 from . import auth
 from .forms import LoginForm, RegistrationForm
 
-from .. import db
+from ..app import db
 from ..models import User
 from ..common import send_confirm_account_email
 
@@ -36,5 +36,10 @@ def register():
         db.session.commit()
         send_confirm_account_email(user)
         flash("A confirmation email has been sent to you by email.")
-        return redirect(url_for("main.index"))
+        return redirect(url_for("cms.index"))
     return render_template("auth/register.html", form=form)
+
+
+@auth.route("/confirm/<token>", methods=["GET", "POST"])
+def confirm_account(token: str):
+    return token

@@ -19,7 +19,7 @@ class Config:
 
     # Celery
     CELERY_BROKER_URL = os.environ.get("BLOG_TASK_BROKER")
-    RESULT_BACKEND = os.environ.get("BLOG_TASK_RESULT")
+    CELERY_RESULT_BACKEND = os.environ.get("BLOG_TASK_RESULT")
 
     @staticmethod
     def init_app(app):

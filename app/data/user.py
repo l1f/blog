@@ -7,7 +7,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .role import Role, Permission
-from .. import db, login_manager
+from ..app import db, login_manager
 
 
 class User(UserMixin, db.Model):
@@ -47,7 +47,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirm_token(self, expiration=3600) -> str:
-        s = Serializer(current_app.config["SECRET_KEY", expiration], expiration)
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
         return s.dumps(("confirm", self.id)).decode("UTF-8")
 
     def confirm(self, token) -> bool:
