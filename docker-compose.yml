@@ -19,7 +19,7 @@ services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: .docker/dev/flask.dockerfile
     ports:
       - "5000:5000"
     volumes:
@@ -31,7 +31,7 @@ services:
   runner:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: .docker/dev/flask.dockerfile
     command: celery -A worker.celery worker --loglevel=info
     volumes:
       - .:/app
@@ -44,6 +44,12 @@ services:
     image: larryprice/sass
     volumes:
     - ./app/static/css:/src
+  typescript:
+    build:
+      context: .
+      dockerfile: .docker/dev/node.dockerfile
+    volumes:
+      - .:/app
 
 networks:
   database:
