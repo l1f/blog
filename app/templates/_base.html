@@ -45,6 +45,11 @@
 {% endblock %}
 {% block content %}
     <main class="main">
+        {% if not current_user.confirmed %}
+            <div>You have not confirmed your account yet.</div>
+            <div>Need another confirmation email? <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
+            </div>
+        {% endif %}
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}

@@ -2,17 +2,12 @@ from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, current_user, login_required
 
 from . import auth
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm
 
 from ..decorators import redirect_if_logged_in
 from ..app import db
 from ..models import User
 from ..common import send_confirm_account_email
-
-
-@auth.route("/test", methods=["GET", "POST"])
-def test():
-    return request.args.get("next")
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -41,7 +36,7 @@ def register():
         db.session.commit()
         send_confirm_account_email(user)
         flash("A confirmation email has been sent to you by email.")
-        return redirect(url_for("blog.index"))
+        return redirect(url_for(".unconfirmed"))
     return render_template("auth/register.html", form=form)
 
 
@@ -54,3 +49,40 @@ def confirm_account(token: str):
     else:
         flash("The confirmation link is invalid or has expired")
     return redirect(url_for("blog.index"))
+
+
+@auth.route("/confirm")
+@login_required
+def resend_confirmation():
+    send_confirm_account_email(current_user)
+    flash("A new confirmation email has been sent to you by email.")
+    return redirect(url_for("auth.unconfirmed"))
+
+
+@auth.route("/unconfirmed")
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for("blog.index"))
+    return render_template("auth/unconfirmed.html")
+
+
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been updated.')
+            return redirect(url_for('blog.index'))
+        else:
+            flash('Invalid password.')
+    return render_template("auth/change_password.html", form=form)
+
+
+@auth.before_request
+def before_request():
+    if current_user.is_authenticated and request.blueprint != "auth" and request.endpoint != "static":
+        return redirect(url_for("auth.unconfirmed"))

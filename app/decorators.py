@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import abort, redirect
+from flask import abort, redirect, url_for
 from flask_login import current_user
 from .models import Permission
 
@@ -26,7 +26,7 @@ def redirect_if_logged_in():
         @wraps(f)
         def decorator_function(*args, **kwargs):
             if current_user.is_authenticated:
-                redirect("blog.index")
+                return redirect(url_for("blog.index"))
             return f(*args, **kwargs)
         return decorator_function
     return decorator
