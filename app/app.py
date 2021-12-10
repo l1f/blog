@@ -1,7 +1,8 @@
 from flask import Flask
 
 from config import config
-from .exstensions import db, login_manager, celery, mail
+
+from .exstensions import celery, db, login_manager, mail
 
 
 def create_app(config_name="default"):
@@ -16,8 +17,9 @@ def create_app(config_name="default"):
     login_manager.login_view = "auth.login"
 
     from .auth import auth
-    from .cms import cms
     from .blog import blog
+    from .cms import cms
+
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(cms, url_prefix="/cms")
     app.register_blueprint(blog)
@@ -27,8 +29,8 @@ def create_app(config_name="default"):
 
 def init_celery(app=None):
     app = app or create_app()
-    celery.conf.broker_url = app.config['CELERY_BROKER_URL']
-    celery.conf.result_backend = app.config['CELERY_BROKER_URL']
+    celery.conf.broker_url = app.config["CELERY_BROKER_URL"]
+    celery.conf.result_backend = app.config["CELERY_BROKER_URL"]
     celery.conf.update(app.config)
 
     class ContextTask(celery.Task):

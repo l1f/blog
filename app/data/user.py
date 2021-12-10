@@ -1,13 +1,13 @@
 from datetime import datetime
 
+from flask import current_app
+from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import exc
-from flask import current_app
-from flask_login import UserMixin, AnonymousUserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from .role import Role, Permission
 from ..app import db, login_manager
+from .role import Permission, Role
 
 
 class User(UserMixin, db.Model):
@@ -65,8 +65,8 @@ class User(UserMixin, db.Model):
         return True
 
     def generate_password_reset_token(self, expiration: int = 3600) -> str:
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'reset': self.id}).decode('utf-8')
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"reset": self.id}).decode("utf-8")
 
     @staticmethod
     def reset_password(token: str, new_password: str) -> bool:
@@ -84,9 +84,13 @@ class User(UserMixin, db.Model):
         db.session.add(user)
         return True
 
-    def generate_email_change_token(self, new_email: str, expiration: int = 3600) -> str:
+    def generate_email_change_token(
+        self, new_email: str, expiration: int = 3600
+    ) -> str:
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps({"change_email": self.id, "new_email": new_email}).decode("UTF-8")
+        return s.dumps({"change_email": self.id, "new_email": new_email}).decode(
+            "UTF-8"
+        )
 
     def change_email(self, token: str) -> bool:
         s = Serializer(current_app.config["SECRET_KEY"])
@@ -118,6 +122,7 @@ class AnonymousUser(AnonymousUserMixin):
     @staticmethod
     def is_administrator():
         return False
+
 
 login_manager.anonymous_user = AnonymousUser
 

@@ -26,13 +26,18 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': [Permission.COMMENT],
-            'Moderate': [Permission.COMMENT, Permission.MODERATE],
-            'Writer': [Permission.COMMENT, Permission.WRITE, Permission.MODERATE],
-            'Administrator': [Permission.COMMENT, Permission.WRITE, Permission.MODERATE, Permission.ADMIN],
+            "User": [Permission.COMMENT],
+            "Moderate": [Permission.COMMENT, Permission.MODERATE],
+            "Writer": [Permission.COMMENT, Permission.WRITE, Permission.MODERATE],
+            "Administrator": [
+                Permission.COMMENT,
+                Permission.WRITE,
+                Permission.MODERATE,
+                Permission.ADMIN,
+            ],
         }
 
-        default_role = 'User'
+        default_role = "User"
         for r in roles:
             role = Role.query.filter_by(name=r).first()
             if role is None:
@@ -40,7 +45,7 @@ class Role(db.Model):
             role.reset_permissions()
             for perm in roles[r]:
                 role.add_permission(perm)
-            role.default = (role.name == default_role)
+            role.default = role.name == default_role
             db.session.add(role)
         db.session.commit()
 

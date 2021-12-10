@@ -1,9 +1,10 @@
 import os
 from getpass import getpass
+
 from flask_migrate import Migrate
 
-from app.app import create_app, db
 import app.models as models
+from app.app import create_app, db
 
 app = create_app(os.getenv("BLOG_CONFIG") or "default")
 migrate = Migrate(app, db)
