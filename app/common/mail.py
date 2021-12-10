@@ -6,15 +6,6 @@ from ..models import User
 from ..tasks.mail import send_async_email
 
 
-@dataclass
-class Email:
-    recipients: List[str]
-    body_html: str
-    body_txt: str
-    subject: str
-    sender: str
-
-
 def new_email(recipients: List[str], template_name: str, subject: str, **kwargs):
     return {
         "recipients": recipients,
@@ -26,15 +17,12 @@ def new_email(recipients: List[str], template_name: str, subject: str, **kwargs)
 
 
 def send_confirm_account_email(user: User):
-    print("Send confirm mail")
     token = user.generate_confirm_token()
-    print("Generate Token")
     email = new_email(
         recipients=[user.email],
-        subject=f"{current_app.config['BLOG_MAIL_SUBJECT_PREFIX']} - Confirm Your Account",
+        subject="Confirm Your Account",
         template_name="auth/email/confirm",
         user=user,
         token=token
     )
-    print(email)
     send_async_email.delay(email)

@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
 
     def generate_confirm_token(self, expiration=3600) -> str:
         s = Serializer(current_app.config["SECRET_KEY"], expiration)
-        return s.dumps(("confirm", self.id)).decode("UTF-8")
+        return s.dumps({"confirm": self.id}).decode("UTF-8")
 
     def confirm(self, token) -> bool:
         s = Serializer(current_app.config["SECRET_KEY"])
@@ -61,7 +61,7 @@ class User(UserMixin, db.Model):
             return False
 
         self.confirmed = True
-        db.session(self)
+        db.session.add(self)
         return True
 
     def generate_password_reset_token(self, expiration: int = 3600) -> str:

@@ -6,7 +6,7 @@
         <div class="page-header">
             <h1>Login</h1>
         </div>
-        <form method="POST" action="{{ url_for("auth.login") }}">
+        <form method="POST" action="{{ url_for(request.endpoint, **request.args) }}">
             <div>
                 <div>
                     {{ form.email.label }}
