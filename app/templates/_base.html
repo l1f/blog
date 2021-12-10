@@ -45,7 +45,7 @@
 {% endblock %}
 {% block content %}
     <main class="main">
-        {% if not current_user.confirmed %}
+        {% if not current_user.confirmed and not current_user.is_anonymous %}
             <div>You have not confirmed your account yet.</div>
             <div>Need another confirmation email? <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
             </div>
