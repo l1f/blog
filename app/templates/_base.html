@@ -28,6 +28,11 @@
                     <li>
                         <a href="{{ url_for('auth.logout') }}" class="danger">Logout</a>
                     </li>
+                    {% if current_user.can(permissions.WRITE) %}
+                        <li>
+                            <a href="{{ url_for('cms.index') }}" class="info">CMS</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </nav>

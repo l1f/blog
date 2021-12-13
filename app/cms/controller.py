@@ -13,7 +13,7 @@ def index():
 
 @cms.before_request
 @login_required
-@permission_required(Permission.WRITE)
+@permission_required(Permission.WRITE, 404)
 def before_request():
     """
     It should only be determined whether the current user is logged in
