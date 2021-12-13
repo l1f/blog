@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}" type="image/x-icon">
+        <link rel="icon" href="{{ url_for("static", filename="favicon.ico") }}" type="image/x-icon">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block css %}
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+        {% endblock %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    {% endblock %}
+    <title>{% block title %}Blog{% endblock %}</title>
+</head>
+<body>
+<div class="cms">
+    {% block navbar %}
+        <nav class="vertical-menu-wrapper">
+            <div class="vertical-menu-logo">
+                <div>CMS</div>
+            </div>
+            <ul class="vertical-menu">
+                <li>Posts</li>
+                <li>Pages</li>
+                <li>Settings</li>
+                <li id="user-info">{{ current_user.username }}</li>
+            </ul>
+        </nav>
+    {% endblock %}
+    {% block content %}
+        <div class="content-wrapper">
+            <div class="content">
+                Test
+            </div>
+        </div>
+    {% endblock %}
+    {% block scripts %}
+        <script src="{{ url_for("static", filename="js/index.js") }}"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    {% endblock %}
+</div>
+</body>
+</html>
