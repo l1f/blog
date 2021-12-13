@@ -24,15 +24,6 @@
 #}
         <nav>
             <ul>
-                <li>
-                    <a href="index.html">home</a>
-                </li>
-                <li>
-                    <a href="contact.html">contact</a>
-                </li>
-                <li>
-                    <a href="about.html">about</a>
-                </li>
                 {% if current_user.is_authenticated %}
                     <li>
                         <a href="{{ url_for('auth.logout') }}" class="danger">Logout</a>
@@ -66,7 +57,7 @@
 {% block footer %}
     <footer class="footer">
         {% block footer_content %}
-            &copy; 2018 &middot; All Rights Reserved
+
         {% endblock %}
     </footer>
 {% endblock %}
