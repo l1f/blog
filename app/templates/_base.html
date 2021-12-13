@@ -17,42 +17,47 @@
 <body>
 {% block navbar %}
     <header class="header">
+        {#
         <a href="index.html" class="logo">
-            <img src="assets/logo.png" style="width: 2rem;">
             <span>fibonacci</span>
         </a>
-
+#}
         <nav>
             <ul>
-                <li>
-                    <form class="search-form">
-                        <input type="search" placeholder="Search...">
-                        <span class="icon search"></span>
-                    </form>
-                </li>
-                <li>
-                    <a href="index.html">home</a>
-                </li>
-                <li>
-                    <a href="contact.html">contact</a>
-                </li>
-                <li>
-                    <a href="about.html">about</a>
-                </li>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for('auth.logout') }}" class="danger">Logout</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('auth.self') }}" class="info">{{ current_user.username }}</a>
+                    </li>
+                    {% if current_user.can(permissions.WRITE) %}
+                        <li>
+                            <a href="{{ url_for('cms.index') }}" class="info">CMS</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </nav>
     </header>
 {% endblock %}
 {% block content %}
     <main class="main">
-        {% if not current_user.confirmed and not current_user.is_anonymous %}
-            <div>You have not confirmed your account yet.</div>
-            <div>Need another confirmation email? <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
-            </div>
-        {% endif %}
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
+        <article>
+            {% if not current_user.confirmed and not current_user.is_anonymous %}
+                <div class="alert info">You have not confirmed your account yet.
+                    <div>Need another confirmation email? <a href="{{ url_for('auth.resend_confirmation') }}">Click
+                        here</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% for message in get_flashed_messages() %}
+                <div class="alert info">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </article>
+
         {% block page_content %}
         {% endblock %}
     </main>
@@ -60,7 +65,7 @@
 {% block footer %}
     <footer class="footer">
         {% block footer_content %}
-            &copy; 2018 &middot; All Rights Reserved
+
         {% endblock %}
     </footer>
 {% endblock %}

@@ -113,6 +113,63 @@ h6 {
   margin-bottom: $xs-size;
 }
 
+
+.alert {
+  position: relative;
+  padding: 1rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+
+  &.primary {
+    color: $primary-color;
+    background-color: $primary-background-color;
+    border-color: $info-border-color;
+  }
+
+  &.secondary {
+    color: $secondary-color;
+    background-color: $secondary-background-color;
+    border-color: $secondary-border-color;
+  }
+
+  &.success {
+    color: $success-color;
+    background-color: $success-background-color;
+    border-color: $success-border-color;
+  }
+
+  &.danger {
+    color: $danger-color;
+    background-color: $danger-background-color;
+    border-color: $danger-border-color;
+  }
+
+  &.warning {
+    color: $warning-color;
+    background-color: $warning-background-color;
+    border-color: $warning-border-color;
+  }
+
+  &.info {
+    color: $info-color;
+    background-color: $info-background-color;
+    border-color: $info-border-color;
+  }
+
+  &.light {
+    color: $light-color;
+    background-color: $light-background-color;
+    border-color: $light-border-color;
+  }
+
+  &.dark {
+    color: $dark-color;
+    background-color: $dark-background-color;
+    border-color: $dark-border-color;
+  }
+}
+
 // Links.
 a:link,
 a:visited,
@@ -314,29 +371,6 @@ input[type="search"]::-webkit-search-results-decoration {
   display: none;
 }
 
-.icon {
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  background-repeat: no-repeat;
-
-  &.calendar {
-    background-image: url('assets/calendar.svg');
-  }
-
-  &.tag {
-    background-image: url('assets/tag.svg');
-  }
-
-  &.comment {
-    background-image: url('assets/comment.svg');
-  }
-
-  &.search {
-    background-image: url('assets/search.svg');
-  }
-}
-
 // Layout elements
 .header, .footer {
   display: flex;
@@ -388,9 +422,38 @@ input[type="search"]::-webkit-search-results-decoration {
       transition: color 0.5s;
       font-size: 0.75rem;
 
-      &:hover {
-        color: $body-color;
+      &.primary {
+        color: $primary-color;
       }
+
+      &.secondary {
+        color: $secondary-color;
+      }
+
+      &.success {
+        color: $success-color;
+      }
+
+      &.danger {
+        color: $danger-color;
+      }
+
+      &.warning {
+        color: $warning-color;
+      }
+
+      &.info {
+        color: $info-color;
+      }
+
+      &.light {
+        color: $light-color;
+      }
+
+      &.dark {
+        color: $dark-color;
+      }
+
     }
 
     @media only screen and (min-width: $breakpoint1) {
@@ -470,7 +533,6 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .main {
   margin-top: 3.84rem;
-
 
 
   article {

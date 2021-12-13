@@ -3,6 +3,7 @@ from flask import Flask
 from config import config
 
 from .exstensions import celery, db, login_manager, mail
+from .template_injections import inject_permissions
 
 
 def create_app(config_name="default"):
@@ -15,6 +16,8 @@ def create_app(config_name="default"):
     mail.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
+
+    app.context_processor(inject_permissions)
 
     from .auth import auth
     from .blog import blog

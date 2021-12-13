@@ -6,12 +6,12 @@ from flask_login import current_user
 from .models import Permission
 
 
-def permission_required(permission):
+def permission_required(permission, status: int = 403):
     def decorator(f):
         @wraps(f)
         def decorator_function(*args, **kwargs):
             if not current_user.can(permission):
-                abort(403)
+                abort(status)
             return f(*args, **kwargs)
 
         return decorator_function
