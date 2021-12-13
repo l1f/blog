@@ -81,13 +81,10 @@ class PasswordResetForm(FlaskForm):
 
 
 class ChangeEmailForm(FlaskForm):
-    email = StringField(
-        "New Email", validators=[DataRequired(), Length(1, 64), Email()]
-    )
+    email = StringField("New Email", validators=EMAIL_VALIDATORS)
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Update Email Address")
 
-    @staticmethod
-    def validate_email(field):
+    def validate_email(self, field):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError("Email already registered.")

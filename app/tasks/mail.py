@@ -5,7 +5,6 @@ from ..exstensions import celery, mail
 
 @celery.task
 def send_async_email(email_data):
-    print(email_data)
     message = Message(
         recipients=email_data["recipients"],
         subject=email_data["subject"],

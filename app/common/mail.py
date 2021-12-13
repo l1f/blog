@@ -38,3 +38,25 @@ def send_reset_password_mail(user: User):
         token=token,
     )
     send_async_email.delay(email)
+
+
+def send_new_email_confirm_mail(user: User, new_email_address: str):
+    token = user.generate_email_change_token(new_email_address)
+    email = new_email(
+        recipients=[user.email],
+        subject="Confirm your email address",
+        template_name="auth/email/change_email",
+        user=user,
+        token=token,
+    )
+    send_async_email.delay(email)
+
+
+def send_new_email_confirmed(user: User):
+    email = new_email(
+        recipients=[user.email],
+        subject="New email address confirmed",
+        template_name="auth/email/email_confirmed",
+        user=user,
+    )
+    send_async_email.delay(email)

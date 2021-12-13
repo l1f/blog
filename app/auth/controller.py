@@ -2,11 +2,17 @@ from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user
 
 from ..app import db
-from ..common import send_confirm_account_email, send_reset_password_mail
+from ..common import (
+    send_confirm_account_email,
+    send_new_email_confirm_mail,
+    send_new_email_confirmed,
+    send_reset_password_mail,
+)
 from ..decorators import redirect_if_logged_in
 from ..models import User
 from . import auth
 from .forms import (
+    ChangeEmailForm,
     ChangePasswordForm,
     LoginForm,
     PasswordResetForm,
@@ -120,3 +126,32 @@ def password_reset(token):
         else:
             return redirect(url_for("blog.index"))
     return render_template("auth/reset_password.html", form=form, token=token)
+
+
+@auth.route("/change_email", methods=["GET", "POST"])
+@login_required
+def change_email_request():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data.lower()
+            send_new_email_confirm_mail(current_user, new_email)
+            flash(
+                "An email with instructions to confirm your new email address has been sent to you."
+            )
+            return redirect(url_for("blog.index"))
+        flash("Invalid email or password")
+    return render_template("auth/change_email_address.html", form=form)
+
+
+@auth.route("/change_email/<token>")
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        db.session.commit()
+        send_new_email_confirmed(current_user)
+        flash("Your email address has been updated.")
+    else:
+        flash("Invalid request.")
+
+    return redirect(url_for("blog.index"))

@@ -1,0 +1,5 @@
+Dear {{ user.username }},
+
+We would like to inform you that your e-mail address has been changed.
+
+Note: replies to this email address are not monitored.
