@@ -1,0 +1,71 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - database
+  postgres:
+    image: postgres:14.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=blog
+      - POSTGRES_DB=blog
+      - POSTGRES_PASSWORD=blog
+    networks:
+      - database
+  server:
+    build:
+      context: .
+      dockerfile: .docker/dev/flask.dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - BLOG_DEV_DATABASE_URI=postgresql://blog:blog@postgres:5432/blog
+      - BLOG_TASK_BROKER=redis://redis:6379/0
+      - BLOG_TASK_RESULT=redis://redis:6379/1
+    networks:
+      - database
+      - mail
+  runner:
+    build:
+      context: .
+      dockerfile: .docker/dev/flask.dockerfile
+    command: celery -A app.celery_app:app worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - MAIL_SERVER=mail
+      - MAIL_PORT=1025
+      - MAIL_USE_TLS=False
+      - BLOG_TASK_BROKER=redis://redis:6379/0
+      - BLOG_TASK_RESULT=redis://redis:6379/1
+    networks:
+      - database
+      - mail
+  sass:
+    image: larryprice/sass
+    volumes:
+    - ./app/static/css:/src
+  typescript:
+    build:
+      context: .
+      dockerfile: .docker/dev/node.dockerfile
+    volumes:
+      - .:/app
+  mail:
+    image: lordius/alpine-mailhog
+    ports:
+     - 1025:1025
+     - 8025:8025
+    networks:
+      - mail
+
+
+networks:
+  database:
+  mail:

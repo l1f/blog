@@ -139,3 +139,7 @@ cython_debug/
 *.css.map
 *.sass.map
 *.scss.map
+
+### JavaScript ###
+*.js
+node_modules/

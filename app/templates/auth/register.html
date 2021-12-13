@@ -4,27 +4,24 @@
 {% block page_content %}
     <article>
         <div class="page-header">
-            <h1>Login</h1>
+            <h1>Register</h1>
         </div>
-        <form method="POST" action="{{ url_for(request.endpoint, **request.args) }}">
+        <form method="POST" action="{{ url_for("auth.register") }}">
             <div>
                 <div>
                     {{ form.email.label }}
                     {{ form.email() }}
+                    {{ form.username.label }}
+                    {{ form.username() }}
                     {{ form.password.label }}
                     {{ form.password() }}
-                    {{ form.remember_me.label }}
-                    {{ form.remember_me() }}
+                    {{ form.password2.label }}
+                    {{ form.password2() }}
                     {{ form.csrf_token }}
                 </div>
                 <div>
                     {{ form.submit }}
                 </div>
-                <p>
-                    New user?
-                    <a href="{{ url_for("auth.register") }}">Register</a>
-                </p>
-                <p>Forgot your password? <a href="{{ url_for('auth.password_reset_request') }}">Click here to reset it</a>.</p>
             </div>
         </form>
     </article>

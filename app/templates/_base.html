@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <link rel="shortcut icon" href="{{ url_for("static", filename="favicon.ico") }}" type="image/x-icon">
         <link rel="icon" href="{{ url_for("static", filename="favicon.ico") }}" type="image/x-icon">
-        <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}" type="text/css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block css %}
             <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -45,12 +45,16 @@
 {% endblock %}
 {% block content %}
     <main class="main">
+        {% if not current_user.confirmed and not current_user.is_anonymous %}
+            <div>You have not confirmed your account yet.</div>
+            <div>Need another confirmation email? <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
+            </div>
+        {% endif %}
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}
         {% block page_content %}
         {% endblock %}
-
     </main>
 {% endblock %}
 {% block footer %}
@@ -61,6 +65,7 @@
     </footer>
 {% endblock %}
 {% block scripts %}
+    <script src="{{ url_for("static", filename="js/index.js") }}"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 </body>
