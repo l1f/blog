@@ -163,3 +163,9 @@ def logout():
     logout_user()
     flash("You have been logged out.")
     return redirect(url_for("blog.index"))
+
+
+@auth.route("/self")
+@login_required
+def self():
+    return render_template("auth/self.html", user=current_user)
