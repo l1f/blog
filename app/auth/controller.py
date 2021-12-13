@@ -1,5 +1,5 @@
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_required, login_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 from ..app import db
 from ..common import (
@@ -154,4 +154,12 @@ def change_email(token):
     else:
         flash("Invalid request.")
 
+    return redirect(url_for("blog.index"))
+
+
+@auth.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.")
     return redirect(url_for("blog.index"))
