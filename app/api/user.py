@@ -2,6 +2,7 @@ from flask import jsonify
 
 from ..data import Permission, User
 from ..decorators import permission_required
+from ..exstensions import db
 from . import api
 
 
@@ -19,13 +20,10 @@ def user_by_id(user_id):
     return jsonify(user.to_dict())
 
 
-@api.route("/users/<id>", methods=["DELETE"])
+@api.route("/users/<user_id>", methods=["DELETE"])
 @permission_required(Permission.ADMIN)
-def confirm_user_delete(id):
-    pass
-
-
-@api.route("/users/<id>", methods=["DELETE"])
-@permission_required(Permission.ADMIN)
-def delete_user_by_id(id):
-    return jsonify("cms/index.html")
+def delete_user_by_id(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify("", 204)

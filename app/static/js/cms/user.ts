@@ -1,28 +1,11 @@
+import {UserData, DialogTypes} from "./dialog";
+
 const deleteButtons: HTMLCollectionOf<Element> | null = document.getElementsByClassName("delete-user")
 const dialogDiv = document.getElementById("js-dialog")
 
-interface UserData {
-    id: number
-    email: string
-    confirmed: boolean
-    member_since: string
-    name: string | null
-    role_id: number | null
-}
-
-enum DialogTypes {
-    primary = "primary",
-    secondary = "secondary",
-    success = "success",
-    danger = "danger",
-    warning = "warning",
-    info = "info",
-    light = "light",
-    dark = "dark",
-}
-
 type dialogEvent = () => HTMLDivElement;
 
+// @ts-ignore
 for (const btn of deleteButtons) {
     btn.addEventListener("click", () => {
         confirmDelete(btn.id.replace("user-", ""))
@@ -93,6 +76,7 @@ const deleteUser = async (userId: number) => {
             method: "DELETE"
         })
     } catch (error) {
+        // @ts-ignore
         updateDialog(() => errorDialog(error.toString()))
     }
 

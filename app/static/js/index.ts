@@ -1,1 +1,1 @@
-import "cms/user"
+import "./cms/user"
