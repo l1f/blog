@@ -1,5 +1,4 @@
-from flask import render_template
-from flask_login import login_required
+from flask import render_template, request
 
 from ..data import Permission, User
 from ..decorators import permission_required
@@ -17,6 +16,12 @@ def user_index():
 @permission_required(Permission.ADMIN)
 def user_by_id(id):
     return render_template("cms/index.html")
+
+
+@cms.route("/users/delete_confirm/<id>", methods=["DELETE"])
+@permission_required(Permission.ADMIN)
+def confirm_user_delete(id):
+    pass
 
 
 @cms.route("/users/<id>", methods=["DELETE"])

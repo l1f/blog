@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>user</h1>
+    <div id="js-dialog"></div>
     <section>
         <header>
             <div class="col">id</div>
@@ -20,7 +21,7 @@
                 <div class="col">{{ user.confirmed }}</div>
                 <div class="col">{{ user.role.name }}</div>
                 <div class="col">
-                    <button>delete</button>
+                    <button class="delete-user" id="user-{{ user.id }}">delete</button>
                     <button>edit</button>
                 </div>
             </div>

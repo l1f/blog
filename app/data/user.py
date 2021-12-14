@@ -109,6 +109,23 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def to_dict(self):
+        result = {}
+        columns = self.columns()
+        for col in columns:
+            name = col.name
+            value = getattr(self, name)
+            result[name] = value
+        return result
+
+    @classmethod
+    def columns(cls):
+        tbl = getattr(cls, "__table__", None)
+        if tbl is None:
+            raise NameError("use sample: class TableName(db.Model, CoModel)")
+        else:
+            return tbl.columns
+
     def __repr__(self):
         return f"<User {self.username}>"
 

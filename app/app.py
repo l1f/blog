@@ -2,7 +2,7 @@ from flask import Flask
 
 from config import config
 
-from .exstensions import celery, db, login_manager, mail
+from .exstensions import celery, db, login_manager, mail, toolbar
 from .template_injections import inject_permissions
 
 
@@ -15,16 +15,19 @@ def create_app(config_name="default"):
     init_celery(app)
     mail.init_app(app)
     login_manager.init_app(app)
+    toolbar.init_app(app)
     login_manager.login_view = "auth.login"
 
     app.context_processor(inject_permissions)
 
+    from .api import api
     from .auth import auth
     from .blog import blog
     from .cms import cms
 
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(cms, url_prefix="/cms")
+    app.register_blueprint(api, url_prefix="/api")
     app.register_blueprint(blog)
 
     return app
