@@ -85,4 +85,17 @@
     border-radius: 10px;
     padding: 30px;
   }
+
+  header {
+    display: flex;
+  }
+
+  .row {
+    display: flex;
+  }
+
+  .col {
+    flex: 1;
+  }
+
 }

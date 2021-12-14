@@ -19,7 +19,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     member_since = db.Column(db.DateTime(), default=datetime.utcnow())
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     posts = db.relationship("Post", backref="author", lazy="dynamic")
     role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
 

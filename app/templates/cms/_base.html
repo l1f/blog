@@ -24,18 +24,19 @@
             <ul class="vertical-menu">
                 <li>Posts</li>
                 <li>Pages</li>
-                <li>Settings</li>
+                {% if current_user.can(permissions.ADMIN) %}
+                    <li><a href="{{ url_for("cms.user_index") }}">Users</a></li>
+                    <li>Settings</li>
+                {% endif %}
                 <li id="user-info">{{ current_user.username }}</li>
             </ul>
         </nav>
     {% endblock %}
-    {% block content %}
-        <div class="content-wrapper">
-            <div class="content">
-                Test
-            </div>
+    <div class="content-wrapper">
+        <div class="content">
+            {% block content %}{% endblock %}
         </div>
-    {% endblock %}
+    </div>
     {% block scripts %}
         <script src="{{ url_for("static", filename="js/index.js") }}"></script>
         <script>hljs.initHighlightingOnLoad();</script>

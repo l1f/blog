@@ -1,0 +1,29 @@
+{% extends "cms/_base.html" %}
+
+{% block content %}
+    <h1>user</h1>
+    <section>
+        <header>
+            <div class="col">id</div>
+            <div class="col">email</div>
+            <div class="col">username</div>
+            <div class="col">confirmed</div>
+            <div class="col">role</div>
+            <div class="col"></div>
+
+        </header>
+        {% for user in users %}
+            <div class="row">
+                <div class="col">{{ user.id }}</div>
+                <div class="col">{{ user.email }}</div>
+                <div class="col">{{ user.username }}</div>
+                <div class="col">{{ user.confirmed }}</div>
+                <div class="col">{{ user.role.name }}</div>
+                <div class="col">
+                    <button>delete</button>
+                    <button>edit</button>
+                </div>
+            </div>
+            </section>
+        {% endfor %}
+{% endblock %}
