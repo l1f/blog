@@ -1,5 +1,5 @@
 const deleteButtons: HTMLCollectionOf<Element> | null = document.getElementsByClassName("delete-user")
-const dialog = document.getElementById("js-dialog")
+const dialogDiv = document.getElementById("js-dialog")
 
 interface UserData {
     id: number
@@ -10,16 +10,33 @@ interface UserData {
     role_id: number | null
 }
 
+enum DialogTypes {
+    primary = "primary",
+    secondary = "secondary",
+    success = "success",
+    danger = "danger",
+    warning = "warning",
+    info = "info",
+    light = "light",
+    dark = "dark",
+}
+
+type dialogEvent = () => HTMLDivElement;
+
 for (const btn of deleteButtons) {
     btn.addEventListener("click", () => {
         confirmDelete(btn.id.replace("user-", ""))
     })
 }
 
+const updateDialog = (event: dialogEvent) => {
+    clearDialogDiv()
+    dialogDiv!.append(event())
+}
+
 const confirmDelete = async (userId: string) => {
     const user = await getUserById(userId)
-    clearDialogDiv()
-    dialog!.append(deleteDialog(user))
+    updateDialog(() => deleteDialog(user))
 }
 
 const getUserById = async (userId: string): Promise<UserData> => {
@@ -28,20 +45,55 @@ const getUserById = async (userId: string): Promise<UserData> => {
 }
 
 const clearDialogDiv = () => {
-    while (dialog!.firstChild) {
-        dialog!.removeChild(dialog!.firstChild)
+    while (dialogDiv!.firstChild) {
+        dialogDiv!.removeChild(dialogDiv!.firstChild)
     }
 }
 
-const deleteDialog = (user: UserData): HTMLDivElement => {
-    const div = document.createElement("div")
+const deleteConfirmBtn = (userId: number): HTMLButtonElement => {
     const btn = document.createElement("button")
     btn.innerText = "yes"
-    btn.addEventListener("click", () => {
-        console.log(user.id)
+    btn.addEventListener("click", async () => {
+        console.log(userId)
+        const response = await deleteUser(userId)
+        if (!response?.ok) {
+            updateDialog(() => errorDialog("Error while delete user.. "))
+        }
     })
-    div.className = "alert info"
-    div.innerText = `Do you really want to delete ${user.email}?`
-    div.append(btn)
+
+    return btn
+}
+
+const dialog = (dialogType: DialogTypes, innerDiv: HTMLDivElement): HTMLDivElement => {
+    const div = document.createElement("div")
+    div.className = `alert ${dialogType}`
+    div.append(innerDiv)
+
     return div
+}
+
+const deleteDialog = (user: UserData): HTMLDivElement => {
+    const btn = deleteConfirmBtn(user.id)
+    const innerDiv = document.createElement("div")
+    innerDiv.innerText = `Do you really want to delete ${user.email}?`
+    innerDiv.append(btn)
+    return dialog(DialogTypes.danger, innerDiv)
+}
+
+const errorDialog = (message: string) => {
+    const div = document.createElement("div")
+    div.innerText = message
+
+    return dialog(DialogTypes.danger, div)
+}
+
+const deleteUser = async (userId: number) => {
+    try {
+        return await fetch(`/api/users/${userId}`, {
+            method: "DELETE"
+        })
+    } catch (error) {
+        updateDialog(() => errorDialog(error.toString()))
+    }
+
 }
